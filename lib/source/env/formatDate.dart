@@ -1,0 +1,31 @@
+import 'package:intl/intl.dart';
+
+String formatDate(DateTime time) {
+  final now = DateTime.now();
+  final formattedTime = DateFormat('yyyy-MM-dd').format(
+    DateTime(time.year, time.month, time.day, time.hour, time.minute),
+  );
+  return formattedTime;
+}
+String formatDate2(DateTime time) {
+  final now = DateTime.now();
+  final formattedTime = DateFormat('dd MMMM yyyy').format(
+    DateTime(time.year, time.month, time.day, time.hour, time.minute),
+  );
+  return formattedTime;
+}
+String formatDate3(DateTime time) {
+  final now = DateTime.now();
+  final formattedTime = DateFormat('dd MMM yyyy').format(
+    DateTime(time.year, time.month, time.day, time.hour, time.minute),
+  );
+  return formattedTime;
+}
+
+String formatMonth(DateTime time){
+  final formattedTime = DateFormat('MMMM yyyy').format(
+    DateTime(time.year, time.month, time.day, time.hour, time.minute),
+  );
+  return formattedTime;
+
+}
