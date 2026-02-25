@@ -32,6 +32,7 @@ class AbsensiCheckOutCubit extends Cubit<AbsensiCheckOutState> {
     double? mylongitude,
     double? myDistance,
     String? alamatSaya,
+    String? attndType,
     XFile? imageFile,
     context,
   }) async {
@@ -45,10 +46,6 @@ class AbsensiCheckOutCubit extends Cubit<AbsensiCheckOutState> {
 
       var tanggal = formatDate(DateTime.now());
       var jam = formatDateToTime(DateTime.now());
-
-      final responseCustomer = await repository!.lastCheckIn(userAsSalesId, context);
-
-      final attndType = responseCustomer.data?['data']?['attnd_type'];
 
       final results = await Future.wait([
         addAttendanceWatermark(
@@ -66,7 +63,7 @@ class AbsensiCheckOutCubit extends Cubit<AbsensiCheckOutState> {
       File watermarked = results[0] as File;
 
       if (attndType == "C") {
-        if (int.parse(myDistance!.toStringAsFixed(0)) > int.parse(radius!)) {
+        if (int.parse(myDistance!.toStringAsFixed(0)) > 3000) {
           emit(AbsensiCheckOutFailed(statusCode: 0, json: {"message": "Anda berada jauh dari radius : ${myDistance.toStringAsFixed(2)} M"}));
           return;
         }

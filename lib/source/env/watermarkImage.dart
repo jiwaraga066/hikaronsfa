@@ -23,8 +23,8 @@ Future<File> addAttendanceWatermark({
   final now = DateTime.now();
   final formattedTime = DateFormat("dd MMM yyyy HH:mm").format(now);
 
-  int padding = 20;
-  int lineHeight = 28;
+  int padding = 12;
+  int lineHeight = 14;
   int maxTextWidth = image.width - (padding * 2);
 
   // 🔥 FUNCTION AUTO WRAP
@@ -70,10 +70,10 @@ Future<File> addAttendanceWatermark({
     int yPosition = image.height - boxHeight + padding + (i * lineHeight);
 
     // Shadow
-    img.drawString(image, font: img.arial24, x: padding + 2, y: yPosition + 2, lines[i], color: img.ColorRgb8(0, 0, 0));
+    img.drawString(image, font: img.arial14, x: padding + 2, y: yPosition + 2, lines[i], color: img.ColorRgb8(0, 0, 0));
 
     // Text utama
-    img.drawString(image, font: img.arial24, x: padding, y: yPosition, lines[i], color: img.ColorRgb8(255, 255, 255));
+    img.drawString(image, font: img.arial14, x: padding, y: yPosition, lines[i], color: img.ColorRgb8(255, 255, 255));
   }
 
   final directory = await getTemporaryDirectory();

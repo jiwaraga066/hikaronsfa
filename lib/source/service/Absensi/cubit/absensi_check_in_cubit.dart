@@ -86,7 +86,7 @@ class AbsensiCheckInCubit extends Cubit<AbsensiCheckInState> {
       /// CEK RADIUS (HANYA UNTUK CUSTOMER)
       /// ===============================
       if (customerType == "C") {
-        if (int.parse(myDistance!.toStringAsFixed(0)) > int.parse(radius!)) {
+        if (int.parse(myDistance!.toStringAsFixed(0)) > 3000) {
           emit(AbsensiCheckInFailed(statusCode: 0, json: {"message": "Anda berada jauh dari radius : ${myDistance.toStringAsFixed(2)} M"}));
           return;
         }

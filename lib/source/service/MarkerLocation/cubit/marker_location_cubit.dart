@@ -16,7 +16,7 @@ class MarkerLocationCubit extends Cubit<MarkerLocationState> {
   bool? serviceEnabled;
   LocationPermission? permission;
 
-  void reset(){
+  void reset() {
     emit(MarkerLocationInitial());
   }
 

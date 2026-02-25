@@ -14,7 +14,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
   final String valueCustomer = 'C';
   final String valueNonCustomer = 'N';
   String? selectedCustomerType = "C";
-
+  var selectedIndexCustomer = 0;
   var customer_id, customer_name;
   double? latitudePlace = 0.0;
   double? mylatitude = 0.0;
@@ -61,17 +61,27 @@ class _CheckINScreenState extends State<CheckINScreen> {
     }
   }
 
-  void getLocationCust(customerId) {
-    BlocProvider.of<GetLocationCustomerCubit>(context).getLocationCustomer(customerId, context);
+  void getLocationCust() {
+    BlocProvider.of<GetLocationCustomerCubit>(context).getLocationCustomer(customer_id, context);
   }
 
   void prosesCheckin() async {
+   
+    if (selectedIndexCustomer == 0 && myDistance == 0 && customer_id == null) {
+      MyDialog.dialogAlert2(context, "Jarak belum terhitung, Customer belum di pilih.");
+      return;
+    }
+    if (selectedIndexCustomer == 1 && controllerNonCustomer.text.isEmpty) {
+      MyDialog.dialogAlert2(context, "Mohon di isi keterangan Non - Customer.");
+      return;
+    }
     final XFile? picture = await takePicture();
     if (picture == null) {
       print("Gagal mengambil gambar");
       return;
     }
     print("Picture path: ${picture!.path}");
+
     await Future.delayed(const Duration(seconds: 1));
     BlocProvider.of<AbsensiCheckInCubit>(context).prosesCheckIn(
       context: context,
@@ -94,9 +104,10 @@ class _CheckINScreenState extends State<CheckINScreen> {
     BlocProvider.of<MarkerLocationCubit>(context).reset();
   }
 
-  var selectedIndexCustomer = 0;
+
 
   void onSelectCustomerType(int index) {
+    
     setState(() {
       selectedIndexCustomer = index;
       selectedCustomerType = index == 0 ? 'C' : 'N';
@@ -112,7 +123,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
       data.where((e) => e.ptnrName == value).forEach((a) async {
         customer_id = a.ptnrId;
         customer_name = a.ptnrName;
-        getLocationCust(customer_id);
+        getLocationCust();
         await Future.delayed(Duration(seconds: 1));
         BlocProvider.of<CalculateDistanceCubit>(
           context,
@@ -156,9 +167,12 @@ class _CheckINScreenState extends State<CheckINScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: true,
+      canPop: false,
       onPopInvoked: (didPop) {
+        if (didPop) return;
         clear();
+        Navigator.pop(context, true);
+        BlocProvider.of<MarkerLocationCubit>(context).reset();
       },
       child: Scaffold(
         body: MultiBlocListener(
@@ -342,15 +356,24 @@ class _CheckINScreenState extends State<CheckINScreen> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(left: 12),
-                            child: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.replay_circle_filled_outlined, size: 30)),
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.pop(context, true);
+                                BlocProvider.of<MarkerLocationCubit>(context).reset();
+                              },
+                              icon: Icon(Icons.replay_circle_filled_outlined, size: 32),
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 12),
                             child: IconButton(
                               onPressed: () {
                                 BlocProvider.of<MarkerLocationCubit>(context).getCurrentLocation();
+                                if (customer_id != null) {
+                                  getLocationCust();
+                                }
                               },
-                              icon: Icon(Icons.change_circle_sharp, size: 30),
+                              icon: Icon(Icons.change_circle_sharp, size: 32),
                             ),
                           ),
                         ],
@@ -388,7 +411,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 6),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,10 +425,10 @@ class _CheckINScreenState extends State<CheckINScreen> {
                                         Row(
                                           children: [
                                             const Icon(Icons.location_on, size: 20),
-                                            const Text('Lokasi Kamu', style: TextStyle(fontFamily: 'InterSemiBold', fontSize: 14)),
+                                            const Text('Lokasi Kamu', style: TextStyle(fontFamily: 'InterSemiBold', fontSize: 12)),
                                           ],
                                         ),
-                                        AutoSizeText("$alamatSaya", style: TextStyle(fontFamily: 'InterMedium', fontSize: 10)),
+                                        AutoSizeText("$alamatSaya", style: TextStyle(fontFamily: 'InterMedium', fontSize: 8)),
                                       ],
                                     ),
                                   ),
@@ -419,10 +442,10 @@ class _CheckINScreenState extends State<CheckINScreen> {
                                         Row(
                                           children: [
                                             const Icon(Icons.location_on, size: 20),
-                                            const Text('Lokasi Customer', style: TextStyle(fontFamily: 'InterSemiBold', fontSize: 14)),
+                                            const Text('Lokasi Customer', style: TextStyle(fontFamily: 'InterSemiBold', fontSize: 12)),
                                           ],
                                         ),
-                                        AutoSizeText(alamatCustomer, style: TextStyle(fontFamily: 'InterMedium', fontSize: 10)),
+                                        AutoSizeText(alamatCustomer, style: TextStyle(fontFamily: 'InterMedium', fontSize: 8)),
                                       ],
                                     ),
                                   ),
@@ -509,13 +532,14 @@ class _CheckINScreenState extends State<CheckINScreen> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SizedBox(
-                                  height: 45,
+                                  height: 40,
                                   width: double.infinity,
                                   child: CustomButton2(
                                     onTap: prosesCheckin,
                                     text: "Check-In",
                                     backgroundColor: biru,
-                                    textStyle: const TextStyle(color: whiteCustom, fontSize: 16, fontFamily: 'InterSemiBold'),
+                                    textStyle: const TextStyle(color: whiteCustom, fontSize: 14, fontFamily: 'InterSemiBold'),
+                                    roundedRectangleBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                   ),
                                 ),
                               ),

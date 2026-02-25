@@ -28,14 +28,25 @@ Widget attendanceCard({required String title, required bool isLoading, required 
           children: [
             Center(
               child: InteractiveViewer(
-                child: Image.network(
-                  "$url/storage/uploads/absensi/${data.attndImageIn}",
-                  // headers: {"ngrok-skip-browser-warning": "true"},
-                  fit: BoxFit.contain,
+                child: Container(
                   height: 120,
-                  errorBuilder: (_, __, ___) {
-                    return const Text('Gagal memuat gambar', style: TextStyle(color: Colors.white));
-                  },
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white, // warna border
+                      width: 2, // ketebalan border
+                    ),
+                    borderRadius: BorderRadius.circular(8), // opsional biar agak rounded
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      "$url/storage/uploads/absensi/${data.attndImageIn}",
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) {
+                        return const Center(child: Text('Gagal memuat gambar', style: TextStyle(color: Colors.white)));
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -93,14 +104,25 @@ Widget attendanceCard({required String title, required bool isLoading, required 
           children: [
             Center(
               child: InteractiveViewer(
-                child: Image.network(
-                  "$url/storage/uploads/absensi/${data.attndImageOut}",
-                  // headers: {"ngrok-skip-browser-warning": "true"},
-                  fit: BoxFit.contain,
+                child: Container(
                   height: 120,
-                  errorBuilder: (_, __, ___) {
-                    return const Text('Gagal memuat gambar', style: TextStyle(color: Colors.white));
-                  },
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.white, // warna border
+                      width: 2, // ketebalan border
+                    ),
+                    borderRadius: BorderRadius.circular(8), // opsional biar agak rounded
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      "$url/storage/uploads/absensi/${data.attndImageOut}",
+                      fit: BoxFit.contain,
+                      errorBuilder: (_, __, ___) {
+                        return const Center(child: Text('Gagal memuat gambar', style: TextStyle(color: Colors.white)));
+                      },
+                    ),
+                  ),
                 ),
               ),
             ),

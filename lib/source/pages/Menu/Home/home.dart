@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisCount: 2,
                   mainAxisSpacing: 3,
                   crossAxisSpacing: 8,
-                  childAspectRatio: 0.7,
+                  childAspectRatio:  0.7,
                   padding: const EdgeInsets.all(12),
                   children: [
                     attendanceCard(title: 'Check IN', isLoading: isLoading, isFailed: isFailed, data: data, context: context),
