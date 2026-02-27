@@ -451,7 +451,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 4),
                               Container(
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(6),
@@ -499,29 +499,32 @@ class _CheckINScreenState extends State<CheckINScreen> {
                                   }),
                                 ),
                               ),
-                              const SizedBox(height: 10),
+                              const SizedBox(height: 6),
                               if (selectedCustomerType == "C")
                                 BlocBuilder<GetCustomerCubit, GetCustomerState>(
                                   builder: (context, state) {
                                     final bool isLoaded = state is GetCustomerLoaded;
                                     // final data = (state as GetCustomerLoaded).model;
                                     final data = isLoaded ? state.model : [];
-                                    return DropdownSearch(
-                                      popupProps: const PopupProps.menu(showSearchBox: true),
-                                      items: data.map((e) => e.ptnrName).toList(),
-                                      selectedItem: customer_name,
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                                          hintText: "Search Customer",
-                                          labelStyle: TextStyle(color: Colors.black),
-                                          hintStyle: TextStyle(color: Colors.black),
+                                    return SizedBox(
+                                      height: 40,
+                                      child: DropdownSearch(
+                                        popupProps: const PopupProps.menu(showSearchBox: true),
+                                        items: data.map((e) => e.ptnrName).toList(),
+                                        selectedItem: customer_name,
+                                        dropdownDecoratorProps: const DropDownDecoratorProps(
+                                          dropdownSearchDecoration: InputDecoration(
+                                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                            hintText: "Search Customer",
+                                            labelStyle: TextStyle(color: Colors.black),
+                                            hintStyle: TextStyle(color: Colors.black),
+                                          ),
                                         ),
+                                        onChanged: (value) {
+                                          print("disana");
+                                          setValueCustomer(value, data);
+                                        },
                                       ),
-                                      onChanged: (value) {
-                                        print("disana");
-                                        setValueCustomer(value, data);
-                                      },
                                     );
                                   },
                                 )

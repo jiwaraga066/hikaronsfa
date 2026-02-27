@@ -63,7 +63,7 @@ class AbsensiCheckOutCubit extends Cubit<AbsensiCheckOutState> {
       File watermarked = results[0] as File;
 
       if (attndType == "C") {
-        if (int.parse(myDistance!.toStringAsFixed(0)) > 3000) {
+        if (int.parse(myDistance!.toStringAsFixed(0)) >  int.parse(radius!)) {
           emit(AbsensiCheckOutFailed(statusCode: 0, json: {"message": "Anda berada jauh dari radius : ${myDistance.toStringAsFixed(2)} M"}));
           return;
         }
