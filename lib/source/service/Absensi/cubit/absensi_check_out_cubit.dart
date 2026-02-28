@@ -62,12 +62,12 @@ class AbsensiCheckOutCubit extends Cubit<AbsensiCheckOutState> {
       // String alamat = results[0] as String;
       File watermarked = results[0] as File;
 
-      if (attndType == "C") {
-        if (int.parse(myDistance!.toStringAsFixed(0)) >  int.parse(radius!)) {
+      // if (attndType == "C") {
+        if (int.parse(myDistance!.toStringAsFixed(0)) > int.parse(radius!)) {
           emit(AbsensiCheckOutFailed(statusCode: 0, json: {"message": "Anda berada jauh dari radius : ${myDistance.toStringAsFixed(2)} M"}));
           return;
         }
-      }
+      // }
 
       var body = FormData.fromMap({
         "attnd_date_out": tanggal,

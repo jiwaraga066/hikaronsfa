@@ -9,6 +9,7 @@ final class CalculateDistanceLoading extends CalculateDistanceState {}
 
 final class CalculateDistanceLoaded extends CalculateDistanceState {
   final double meterPlace;
+  String? lokasi;
 
-  CalculateDistanceLoaded({required this.meterPlace});
+  CalculateDistanceLoaded({required this.meterPlace, this.lokasi});
 }

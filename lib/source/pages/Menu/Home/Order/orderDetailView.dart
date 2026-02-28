@@ -48,32 +48,69 @@ class _OrderDetailViewScreenState extends State<OrderDetailViewScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      leading: const Icon(Icons.people_alt, size: 20),
-                      title: Row(
-                        children: [
-                          Expanded(child: Text(data.ptnrName!, style: const TextStyle(fontFamily: 'InterSemiBold', fontSize: 12))),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(color: peachDark.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
-                            child: Text(formatDate2(data.orderDate!), style: const TextStyle(fontFamily: 'InterSemiBold', fontSize: 10, color: peachDark)),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // ListTile(
+                    //   contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    //   leading: const Icon(Icons.people_alt, size: 20),
+                    //   title: Row(
+                    //     children: [
+                    //       Expanded(child: Text(data.ptnrName!, style: const TextStyle(fontFamily: 'InterSemiBold', fontSize: 12))),
+                    //       Container(
+                    //         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    //         decoration: BoxDecoration(color: peachDark.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
+                    //         child: Text(formatDate2(data.orderDate!), style: const TextStyle(fontFamily: 'InterSemiBold', fontSize: 10, color: peachDark)),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsets.only(left: 12, right: 12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("PO", style: TextStyle(fontFamily: "InterMedium", fontSize: 12)),
+                          const Text("Customer", style: TextStyle(fontFamily: "InterMedium", fontSize: 12)),
                           const SizedBox(height: 6),
                           Container(
                             width: double.infinity,
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                             decoration: BoxDecoration(color: grey3.withOpacity(0.4), borderRadius: BorderRadius.circular(6)),
-                            child: Text(data.orderPo!, style: TextStyle(fontFamily: "InterRegular", fontSize: 12)),
+                            child: Text(data.ptnrName!, style: TextStyle(fontFamily: "InterRegular", fontSize: 12)),
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Tanggal", style: TextStyle(fontFamily: "InterMedium", fontSize: 12)),
+                                    const SizedBox(height: 6),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                      decoration: BoxDecoration(color: grey3.withOpacity(0.4), borderRadius: BorderRadius.circular(6)),
+                                      child: Text(formatDate(data.orderDate!), style: TextStyle(fontFamily: "InterRegular", fontSize: 12)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                flex: 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("PO", style: TextStyle(fontFamily: "InterMedium", fontSize: 12)),
+                                    const SizedBox(height: 6),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                      decoration: BoxDecoration(color: grey3.withOpacity(0.4), borderRadius: BorderRadius.circular(6)),
+                                      child: Text(data.orderPo!, style: TextStyle(fontFamily: "InterRegular", fontSize: 12)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 8),
                           const Text("Remark", style: TextStyle(fontFamily: "InterMedium", fontSize: 12)),

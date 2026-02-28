@@ -85,6 +85,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       myDistance: myDistance,
       mylatitude: mylatitude,
       mylongitude: mylongitude,
+      attndType: lastCheckinType,
     );
   }
 
@@ -170,6 +171,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     customerId = json!.attndCustId;
                     lastCheckinType = json!.attndType!;
                   });
+                  BlocProvider.of<CalculateDistanceCubit>(context).checkMeter(
+                    mylatitude: mylatitude,
+                    mylongitude: mylongitude,
+                    latitudePlace: double.parse(json!.attndLatitudeIn!),
+                    longitudePlace: double.parse(json!.attndLongitudeIn!),
+                  );
                   if (json!.attndType == "C") {
                     getLocationCust();
                   }
@@ -219,8 +226,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 if (state is CalculateDistanceLoaded) {
                   EasyLoading.dismiss();
                   var meterPlace = state.meterPlace;
+                  var alamatBaru = state.lokasi;
                   // EasyLoading.showInfo("METER: $meterPlace");
                   setState(() {
+                    alamatCustomer = alamatBaru!;
                     myDistance = meterPlace;
                   });
                 }
