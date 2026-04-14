@@ -29,6 +29,8 @@ class _CheckINScreenState extends State<CheckINScreen> {
     });
   }
 
+  bool buttonCheckIn = false;
+
   bool isCameraReady = false;
   XFile? imageFile;
   Future<XFile?> takePicture() async {
@@ -66,7 +68,9 @@ class _CheckINScreenState extends State<CheckINScreen> {
   }
 
   void prosesCheckin() async {
-   
+    setState(() {
+      buttonCheckIn = true;
+    });
     if (selectedIndexCustomer == 0 && myDistance == 0 && customer_id == null) {
       MyDialog.dialogAlert2(context, "Jarak belum terhitung, Customer belum di pilih.");
       return;
@@ -104,10 +108,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
     BlocProvider.of<MarkerLocationCubit>(context).reset();
   }
 
-
-
   void onSelectCustomerType(int index) {
-    
     setState(() {
       selectedIndexCustomer = index;
       selectedCustomerType = index == 0 ? 'C' : 'N';
@@ -138,6 +139,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
 
     BlocProvider.of<GetCustomerCubit>(context).getLocationCustomer(context);
     BlocProvider.of<MarkerLocationCubit>(context).getCurrentLocation();
+    BlocProvider.of<GetLocationCustomerCubit>(context).reset();
 
     mapController = MapController();
 
@@ -199,12 +201,17 @@ class _CheckINScreenState extends State<CheckINScreen> {
               listener: (context, state) {
                 if (state is AbsensiCheckInLoading) {
                   MyDialog.dialogLoading(context);
+                  setState(() {
+                    buttonCheckIn = true;
+                  });
                 }
                 if (state is AbsensiCheckInFailed) {
                   Navigator.of(context).pop();
                   var json = state.json;
                   var statusCode = state.statusCode;
-
+                  setState(() {
+                    buttonCheckIn = false;
+                  });
                   MyDialog.dialogAlert(context, json['message']);
                 }
                 if (state is AbsensiCheckInLoaded) {
@@ -267,8 +274,7 @@ class _CheckINScreenState extends State<CheckINScreen> {
                       mapController: mapController,
                       options: MapOptions(initialCenter: LatLng(latitude, longitude), initialZoom: 15),
                       children: [
-                        TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'dev.fleaflet.flutter_map.example'),
-
+                        TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'com.hikaronsfa.hikaronsfa'),
                         // LOKASI USER
                         CircleLayer(
                           circles: [
@@ -531,21 +537,21 @@ class _CheckINScreenState extends State<CheckINScreen> {
                               else
                                 CustomField(controller: controllerNonCustomer, hintText: "Masukan Nama Non-Customer", maxline: 1),
                               const SizedBox(height: 12),
-
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SizedBox(
-                                  height: 40,
-                                  width: double.infinity,
-                                  child: CustomButton2(
-                                    onTap: prosesCheckin,
-                                    text: "Check-In",
-                                    backgroundColor: biru,
-                                    textStyle: const TextStyle(color: whiteCustom, fontSize: 14, fontFamily: 'InterSemiBold'),
-                                    roundedRectangleBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              if (!buttonCheckIn)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    height: 40,
+                                    width: double.infinity,
+                                    child: CustomButton2(
+                                      onTap: prosesCheckin,
+                                      text: "Check-In",
+                                      backgroundColor: biru,
+                                      textStyle: const TextStyle(color: whiteCustom, fontSize: 14, fontFamily: 'InterSemiBold'),
+                                      roundedRectangleBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),

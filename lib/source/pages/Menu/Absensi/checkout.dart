@@ -61,7 +61,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     }
   }
 
+  bool buttonCheckOut = false;
   void prosesCheckout() async {
+    setState(() {
+      buttonCheckOut = true;
+    });
     if (myDistance == 0 && customerId == null) {
       MyDialog.dialogAlert2(context, "Jarak belum terhitung, silahkan refresh halaman ini.");
       return;
@@ -187,12 +191,19 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               listener: (context, state) {
                 if (state is AbsensiCheckOutLoading) {
                   MyDialog.dialogLoading(context);
+                  setState(() {
+                    buttonCheckOut = true;
+                  });
                 }
                 if (state is AbsensiCheckOutFailed) {
                   Navigator.of(context).pop();
                   var json = state.json;
                   var statusCode = state.statusCode;
-                  print(json);
+                  // print(json);
+                  setState(() {
+                    buttonCheckOut = false;
+                  });
+
                   MyDialog.dialogAlert(context, json['message']);
                 }
                 if (state is AbsensiCheckOutLoaded) {
@@ -259,7 +270,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       mapController: mapController,
                       options: MapOptions(initialCenter: LatLng(latitude, longitude), initialZoom: 15),
                       children: [
-                        TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'dev.fleaflet.flutter_map.example'),
+                        TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'com.hikaronsfa.hikaronsfa'),
 
                         // LOKASI USER
                         CircleLayer(
@@ -448,20 +459,21 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             child: Text("Jarak : ${myDistance!.toStringAsFixed(2)} M"),
                           ),
                           const SizedBox(height: 12),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SizedBox(
-                              height: 40,
-                              width: double.infinity,
-                              child: CustomButton2(
-                                onTap: prosesCheckout,
-                                text: "Check-Out",
-                                backgroundColor: merah2,
-                                textStyle: const TextStyle(color: whiteCustom, fontSize: 14, fontFamily: 'InterSemiBold'),
-                                roundedRectangleBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          if (!buttonCheckOut)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SizedBox(
+                                height: 40,
+                                width: double.infinity,
+                                child: CustomButton2(
+                                  onTap: prosesCheckout,
+                                  text: "Check-Out",
+                                  backgroundColor: merah2,
+                                  textStyle: const TextStyle(color: whiteCustom, fontSize: 14, fontFamily: 'InterSemiBold'),
+                                  roundedRectangleBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ),

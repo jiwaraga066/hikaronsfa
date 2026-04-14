@@ -158,7 +158,7 @@ class _LokasiScreenState extends State<LokasiScreen> {
                   ),
 
                   children: [
-                    TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'dev.fleaflet.flutter_map.example'),
+                    TileLayer(urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png', userAgentPackageName: 'com.hikaronsfa.hikaronsfa'),
 
                     // LOKASI USER
                     CircleLayer(
