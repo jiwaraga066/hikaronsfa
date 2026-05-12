@@ -170,6 +170,9 @@ class _InsertVisitationScreenState extends State<InsertVisitationScreen> {
                     isDTriggered = true;
                     BlocProvider.of<InsertVisitationImageCubit>(context).insertImage(context);
                   }
+                  generatevisitationOid();
+                  generatevisitationOidBaru();
+                  generatevisitationdVisitationOid();
                   // Navigator.of(context).pop(true);
                 }
               },
