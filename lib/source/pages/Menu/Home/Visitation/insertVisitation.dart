@@ -53,7 +53,7 @@ class _InsertVisitationScreenState extends State<InsertVisitationScreen> {
 
   void generatevisitationOid() {
     setState(() {
-      var uuid = Uuid().v4();
+      var uuid = generateUuidLike();
       visitationOid = uuid;
       visitationd_VisitationOid = uuid;
       print("\n\n visitationOid : $visitationOid \n\n");
@@ -69,7 +69,7 @@ class _InsertVisitationScreenState extends State<InsertVisitationScreen> {
 
   void generatevisitationOidBaru() {
     setState(() {
-      var uuid = Uuid().v4();
+      var uuid = generateUuidLike();
       visitationOidBaru = uuid;
       print("\n\n visitationOidBaru : $visitationOidBaru \n\n");
     });
@@ -139,10 +139,15 @@ class _InsertVisitationScreenState extends State<InsertVisitationScreen> {
                 if (state is GetCustomerVisitationFailed) {}
                 if (state is GetCustomerVisitationLoaded) {
                   var json = state.model!;
+                  if (json.isNotEmpty) {
+
                   setState(() {
                     controllerTanggal = TextEditingController(text: json[0].attndDateIn);
                     customer_name = "${json[0].ptnrName} (${json[0].attndDateIn})";
                   });
+                  } else {
+                    // MyDialog.dialogAlert2(context, "Customer is Empty");
+                  }
                   // Navigator.of(context).pop(true);
                 }
               },
@@ -170,6 +175,7 @@ class _InsertVisitationScreenState extends State<InsertVisitationScreen> {
                     isDTriggered = true;
                     BlocProvider.of<InsertVisitationImageCubit>(context).insertImage(context);
                   }
+                  BlocProvider.of<GetCustomerVisitationCubit>(context).getCustomerVisitation(context);
                   generatevisitationOid();
                   generatevisitationOidBaru();
                   generatevisitationdVisitationOid();
